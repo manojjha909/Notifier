@@ -46,4 +46,9 @@ public class ReminderController {
         List<Reminder> reminder = reminderService.getActiveNotification(user);
         return reminder;
     }
+
+    @RequestMapping(value = "/fetchReminders", method = RequestMethod.POST)
+    public List<Reminder> fetchAllReminders(@RequestBody User user) {
+        return reminderService.getReminders(user);
+    }
 }

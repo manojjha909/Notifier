@@ -49,9 +49,6 @@ public class ReminderService {
     public List<Reminder> getActiveNotification(User user){
         List reminderList = null;
         if(user!=null){
-//            Query query = new Query();
-//            query.addCriteria(Criteria.where("_id").in(user.getUserName()));
-//            reminder = mongoTemplate.findOne(query, Reminder.class);
             List<Reminder> list = reminderDao.fetchReminder(user.getUserName());
             if(list != null){
                 reminderList = new ArrayList();
@@ -65,6 +62,17 @@ public class ReminderService {
             }
 
         }
+        return reminderList;
+    }
+
+    public List<Reminder> getReminders(User user){
+        Query query = new Query();
+        query.addCriteria(Criteria.where("userName").is(user.getUserName()));
+        List<Reminder> reminderList = mongoTemplate.find(query, Reminder.class);
+
+        reminderList.add(new Reminder(1, "msnishan@gmail.com", "Test Reminder 1", "Test Reminder Description 1", true, null, 15));
+        reminderList.add(new Reminder(2, "msnishan@gmail.com", "Test Reminder 2", "Test Reminder Description 2", true, null, 10));
+        reminderList.add(new Reminder(3, "msnishan@gmail.com", "Test Reminder 3", "Test Reminder Description 3", false, null, 20));
         return reminderList;
     }
 
