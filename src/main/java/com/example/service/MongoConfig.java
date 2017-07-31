@@ -46,8 +46,12 @@ public class MongoConfig {
     public MongoTemplate mongoTemplate(){
         MongoClient mongoClient = new MongoClient(new ServerAddress(host));
         MongoDbFactory mongoDbFactory = new SimpleMongoDbFactory(mongoClient, database);
+        ReminderDaoImpl.addUserAndReminder();
         return new MongoTemplate(mongoDbFactory);
     }
+
+
+
 
 
 }

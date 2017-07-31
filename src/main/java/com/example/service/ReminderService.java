@@ -9,6 +9,7 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -34,25 +35,37 @@ public class ReminderService {
     ReminderDaoImpl reminderDao;
 
     public void login(User user){
-        if(user.getUserName() != null && user.getPassword() != null){
-            mongoTemplate.save(user, "User");
-        }
+//        if(user.getUserName() != null && user.getPassword() != null){
+//            mongoTemplate.save(user, "User");
+//        }
+        reminderDao.addUser(user);
 
     }
 
-    public Reminder getESANotification(User user){
-        Reminder reminder = null;
+    public List<Reminder> fetchReminder(User user){
+        return reminderDao.fetchReminder(user.getUserName());
+    }
+
+    public List<Reminder> getActiveNotification(User user){
+        List reminderList = null;
         if(user!=null){
-            Query query = new Query();
-            query.addCriteria(Criteria.where("_id").in(user.getUserName()));
-            reminder = mongoTemplate.findOne(query, Reminder.class);
-            System.out.println("----->" + reminder.getScheduler());
-//            if(reminder != null && reminderUtils.isESANotificationTiming(reminder)){
-//                reminderDao.updateReminderScheduler(reminder,reminderUtils.addScheduleToInterval(reminder));
-//                System.out.println("*******" + reminder.getScheduler());
-//            }
+//            Query query = new Query();
+//            query.addCriteria(Criteria.where("_id").in(user.getUserName()));
+//            reminder = mongoTemplate.findOne(query, Reminder.class);
+            List<Reminder> list = reminderDao.fetchReminder(user.getUserName());
+            if(list != null){
+                reminderList = new ArrayList();
+            }
+            for (Reminder reminder:list) {
+
+                if(reminder != null && reminderUtils.isNotificationTiming(reminder)){
+                    reminderDao.updateReminderScheduler(reminder,reminderUtils.addScheduleToInterval(reminder));
+                    reminderList.add(reminder);
+                }
+            }
+
         }
-        return reminder;
+        return reminderList;
     }
 
     public boolean addReminder(Reminder reminder){

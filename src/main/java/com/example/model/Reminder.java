@@ -3,6 +3,7 @@ package com.example.model;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.Date;
 
 
 /**
@@ -16,14 +17,14 @@ public class Reminder {
     private String reminderName;
     private String description;
     private boolean enableNotificaton;
-    private long scheduler;
+    private Date scheduler;
     private int interval;
 
     public Reminder(){
     }
 
     public Reminder(String userName, String reminderName, String description, boolean enableNotificaton,
-                    long scheduler, int interval){
+                    Date scheduler, int interval){
         this.userName = userName;
         this.reminderName = reminderName;
         this.description = description;
@@ -65,11 +66,11 @@ public class Reminder {
         this.enableNotificaton = enableNotificaton;
     }
 
-    public long getScheduler() {
+    public Date getScheduler() {
         return scheduler;
     }
 
-    public void setScheduler(long scheduler) {
+    public void setScheduler(Date scheduler) {
         this.scheduler = scheduler;
     }
 

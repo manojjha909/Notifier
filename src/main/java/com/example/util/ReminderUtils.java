@@ -20,17 +20,20 @@ public class ReminderUtils {
     @Autowired
     ReminderConfiguration configuration;
 
-    public boolean isESANotificationTiming(Reminder reminder){
-        DateTime date = DateTime.now();
-        int min = (int)reminder.getScheduler()/600;
-        int dateMin = (int)date.getMillis()/600;
-        if(min == dateMin){
+    public boolean isNotificationTiming(Reminder reminder){
+        Date date = new Date();
+
+        if(date.getHours() == reminder.getScheduler().getHours()){
+//            if(date.getMinutes()==reminder.getScheduler().getMinutes()){
                 return true;
+//            }
         }
         return false;
     }
 
-    public long addScheduleToInterval(Reminder reminder){
-        return reminder.getScheduler()+(reminder.getInterval()*600);
+    public Date addScheduleToInterval(Reminder reminder){
+        Date date = reminder.getScheduler();
+        int sec= reminder.getScheduler().getSeconds()+(reminder.getInterval()*60);
+        return new Date(sec*10);
     }
 }
