@@ -33,10 +33,8 @@ public class ReminderService {
     @Autowired
     ReminderDaoImpl reminderDao;
 
-    private Date today;
-
     public void login(User user){
-        if(user.getName() != null && user.getPassword() != null){
+        if(user.getUserName() != null && user.getPassword() != null){
             mongoTemplate.save(user, "User");
         }
 
@@ -46,12 +44,13 @@ public class ReminderService {
         Reminder reminder = null;
         if(user!=null){
             Query query = new Query();
-            query.addCriteria(Criteria.where("userName").in(user.getName()));
-            List<Reminder> reminderList = mongoTemplate.find(query, Reminder.class);
-            reminder = reminderList.get(0);
-            if(reminder != null && reminderUtils.isESANotificationTiming(reminder)){
-                reminderDao.updateReminderScheduler(reminder,reminderUtils.addScheduleToInterval(reminder));
-            }
+            query.addCriteria(Criteria.where("_id").in(user.getUserName()));
+            reminder = mongoTemplate.findOne(query, Reminder.class);
+            System.out.println("----->" + reminder.getScheduler());
+//            if(reminder != null && reminderUtils.isESANotificationTiming(reminder)){
+//                reminderDao.updateReminderScheduler(reminder,reminderUtils.addScheduleToInterval(reminder));
+//                System.out.println("*******" + reminder.getScheduler());
+//            }
         }
         return reminder;
     }

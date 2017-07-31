@@ -2,7 +2,9 @@ package com.example.util;
 
 import com.example.model.Reminder;
 import com.example.service.ReminderConfiguration;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Component;
 
 import java.util.Calendar;
@@ -19,16 +21,16 @@ public class ReminderUtils {
     ReminderConfiguration configuration;
 
     public boolean isESANotificationTiming(Reminder reminder){
-        Date date = new Date();
-        if(reminder.getScheduler() == date){
+        DateTime date = DateTime.now();
+        int min = (int)reminder.getScheduler()/600;
+        int dateMin = (int)date.getMillis()/600;
+        if(min == dateMin){
                 return true;
         }
         return false;
     }
 
-    public Date addScheduleToInterval(Reminder reminder){
-        Date schedule = reminder.getScheduler();
-        Long milliSecond = schedule.getSeconds()*10L;
-        return new Date(milliSecond+reminder.getInterval()*10);
+    public long addScheduleToInterval(Reminder reminder){
+        return reminder.getScheduler()+(reminder.getInterval()*600);
     }
 }

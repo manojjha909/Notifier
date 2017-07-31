@@ -25,5 +25,6 @@ repositories {
 dependencies {
 	compile('org.springframework.boot:spring-boot-starter-data-mongodb')
 	compile('org.springframework.boot:spring-boot-starter-web')
+	compile group: 'joda-time', name: 'joda-time', version: '2.3'
 	testCompile('org.springframework.boot:spring-boot-starter-test')
 }

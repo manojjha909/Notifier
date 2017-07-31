@@ -24,7 +24,7 @@ public class ReminderDaoImpl {
 
     public static final Logger logger = Logger.getLogger(ReminderDaoImpl.class);
 
-    public void updateReminderScheduler(Reminder reminder, Date scheduledDate){
+    public void updateReminderScheduler(Reminder reminder, long scheduledDate){
         Query query = new Query();
         query.addCriteria(Criteria.where("userName").in(reminder.getUserName()));
         Update update = new Update();
