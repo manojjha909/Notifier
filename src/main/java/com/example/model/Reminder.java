@@ -13,6 +13,7 @@ import java.util.Date;
 public class Reminder {
 
     @Id
+    private int id;
     private String userName;
     String reminderName;
     String description;
@@ -23,8 +24,9 @@ public class Reminder {
     public Reminder(){
     }
 
-    public Reminder(String userName, String reminderName, String description, boolean enableNotificaton,
+    public Reminder(int id, String userName, String reminderName, String description, boolean enableNotificaton,
                     Date scheduler, int interval){
+        this.id = id;
         this.userName = userName;
         this.reminderName = reminderName;
         this.description = description;
@@ -33,6 +35,13 @@ public class Reminder {
         this.interval = interval;
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public String getUserName() {
         return userName;

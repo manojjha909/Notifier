@@ -6,6 +6,8 @@ import com.example.model.Reminder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 /**
  * Created by manojjha on 7/27/17.
  */
@@ -37,5 +39,10 @@ public class ReminderController {
         System.out.println("*******/fillESATimesheet");
         Reminder reminder = reminderService.getESANotification(user);
         return reminder;
+    }
+
+    @RequestMapping(value = "/fetchReminders", method = RequestMethod.POST)
+    public List<Reminder> fetchAllReminders(@RequestBody User user) {
+        return reminderService.getReminders(user);
     }
 }
