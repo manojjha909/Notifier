@@ -36,7 +36,7 @@ $(document).ready(function () {
                     "<a href=\"#\"> " +
                     "<div class=\"panel-footer\"> " +
                     "<span class=\"pull-left\">View Details</span> " +
-                    "<span class=\"pull-right\"><input id=\"toggle_"+ data[i].id +"\"  type=\"checkbox\" checked data-toggle=\"toggle\" data-size=\"mini\"> " +
+                    "<span class=\"pull-right\">" + "<input id=\"toggle_"+ data[i].reminderName +"\" class=\"toggleClassNew\" type=\"checkbox\" checked data-toggle=\"toggle\" data-size=\"mini\"> " +
                     "</input></span>" +
                     "<div class=\"clearfix\"></div> " +
                     "</div> " +
@@ -45,7 +45,7 @@ $(document).ready(function () {
                     "</div>";
 
                 $('#reminderId').append(elem);
-                $('#toggle_' +data[i].id).bootstrapToggle();
+                $('#toggle_' +data[i].reminderName).bootstrapToggle();
 
             }
         }
@@ -72,7 +72,48 @@ $(document).ready(function () {
             }
         });
     }
-    
+
+    $(function() {
+        $('.toggleClassNew').change(function() {
+            console.log("inside check");
+            console.log($(this).prop('checked'));
+            console.log(user.userName);
+            var enableNotificaton = $(this).prop('checked');
+            var idNamewithtoggle= ($(this).attr('id'));
+            var reminderNamee = idNamewithtoggle.substring(idNamewithtoggle.lastIndexOf("_")+1);
+            console.log(reminderNamee);
+            $.ajax({
+                        type: "POST",
+                         url: "/reminder/updateReminder",
+                         data: JSON.stringify({userName:user.userName, reminderName:reminderNamee, enableNotificaton:enableNotificaton}),
+                         contentType: 'application/json',
+                         dataType: 'json',
+                         success: function(data) {
+
+                         }
+                     });
+
+
+        })
+    })
+
+    // $('.toggleClassNew').change(function () {
+    //     var enableNotificaton = $(this).prop('checked');
+    //
+    //     $.ajax({
+    //         type: "POST",
+    //         url: "/reminder/updateReminder",
+    //         data: JSON.stringify({userName:user.userName, reminderName:reminderName, enableNotificaton:enableNotificaton}),
+    //         contentType: 'application/json',
+    //         dataType: 'json',
+    //         success: function(data) {
+    //
+    //         }
+    //     });
+    //
+    // })
+
+
     $('#logoutB').click(function () {
         Cookies.remove("user");
         window.location.href = 'login.html';

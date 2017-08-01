@@ -22,15 +22,15 @@ public class ReminderUtils {
 
     public boolean isNotificationTiming(Reminder reminder){
         Date date = new Date();
-        if(date.getSeconds()%5==0 && reminder.getReminderName().equals("ESA")){
+        if(date.getSeconds()%2==0 && reminder.getReminderName().equals("ESA")){
             return true;
         }
 
-        if(date.getSeconds()%6==0 && reminder.getReminderName().equals("Water")){
+        if(date.getSeconds()%2==0 && reminder.getReminderName().equals("Water")){
             return true;
         }
 
-        if(date.getSeconds()%8==0 && reminder.getReminderName().equals("Medicine")){
+        if(date.getSeconds()%2==0 && reminder.getReminderName().equals("Medicine")){
             return true;
         }
 
