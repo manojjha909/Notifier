@@ -5,7 +5,7 @@
 $(document).ready(function () {
     var user;
    if (Cookies.get("user")) {
-       user = Cookies.get("user");
+       user = JSON.parse(Cookies.get("user"));
        console.log(user);
    } else {
        window.location.href = 'login.html';
@@ -13,7 +13,7 @@ $(document).ready(function () {
 
     $.ajax({
         type: "POST",
-        url: "/reminder/fetchReminders",
+        url: "/reminder/fetchAllReminders",
         data: JSON.stringify({userName:user.userName}),
         contentType: 'application/json',
         dataType: 'json',
@@ -36,7 +36,8 @@ $(document).ready(function () {
                     "<a href=\"#\"> " +
                     "<div class=\"panel-footer\"> " +
                     "<span class=\"pull-left\">View Details</span> " +
-                    "<span class=\"pull-right\"><i class=\"fa fa-arrow-circle-right\"></i></span> " +
+                    "<span class=\"pull-right\"><input id=\"toggle_"+ data[i].id +"\"  type=\"checkbox\" checked data-toggle=\"toggle\" data-size=\"mini\"> " +
+                    "</input></span>" +
                     "<div class=\"clearfix\"></div> " +
                     "</div> " +
                     "</a> " +
@@ -44,11 +45,33 @@ $(document).ready(function () {
                     "</div>";
 
                 $('#reminderId').append(elem);
+                $('#toggle_' +data[i].id).bootstrapToggle();
 
             }
         }
     });
-    
+    doPoll();
+
+    function doPoll(){
+        $.ajax({
+            type: "POST",
+            url: "/reminder/getActiveNotification",
+            data: JSON.stringify({userName:user.userName}),
+            contentType: 'application/json',
+            dataType: 'json',
+            success: function(data) {
+                for(var i = 0; i < data.length; i++) {
+                    new PNotify({
+                        title: ''+ data[i].reminderName +'',
+                        text: ''+ data[i].description +'',
+                        type: 'success'
+                    });
+                }
+
+                setTimeout(doPoll,10000);
+            }
+        });
+    }
     
     $('#logoutB').click(function () {
         Cookies.remove("user");

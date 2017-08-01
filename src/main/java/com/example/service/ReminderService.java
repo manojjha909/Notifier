@@ -62,6 +62,7 @@ public class ReminderService {
             }
 
         }
+        reminderList.add(ReminderDaoImpl.reminderList.get(user.getUserName()).get(0));
         return reminderList;
     }
 

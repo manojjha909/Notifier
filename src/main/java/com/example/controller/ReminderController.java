@@ -34,7 +34,7 @@ public class ReminderController {
     }
 
 
-    @RequestMapping(value = "/fetchAllReminder", method = RequestMethod.POST)
+    @RequestMapping(value = "/fetchAllReminders", method = RequestMethod.POST)
     public List<Reminder> fetchReminder(@RequestBody User user){
         return reminderService.fetchReminder(user);
     }
