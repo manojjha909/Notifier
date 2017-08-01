@@ -24,13 +24,13 @@ public class ReminderDaoImpl {
 
     public static final Logger logger = Logger.getLogger(ReminderDaoImpl.class);
 
-    public static Map<String , String>userList = new HashMap<>();
-    public static Map<String , List<Reminder>>reminderList = new HashMap<String , List<Reminder>>();
+    public static Map<String, String> userList = new HashMap<>();
+    public static Map<String, List<Reminder>> reminderList = new HashMap<String, List<Reminder>>();
 
 
-    public static void addUserAndReminder(){
-        userList.put("Manoj","password");
-        userList.put("Khandekar","password");
+    public static void addUserAndReminder() {
+        userList.put("Manoj", "password");
+        userList.put("Khandekar", "password");
 //        Reminder reminder = new Reminder("Manoj","ESA","ESA Description",true,new Date(),5);
         List list= new ArrayList();
         list.add(new Reminder(1, "Manoj","ESA","ESA Description",true,new Date(),10));
@@ -45,12 +45,12 @@ public class ReminderDaoImpl {
 
     }
 
-    public void updateReminderScheduler(Reminder reminder, Date scheduledDate){
+    public void updateReminderScheduler(Reminder reminder, Date scheduledDate) {
         String userName = reminder.getUserName();
-        if(reminderList.get(userName) != null) {
+        if (reminderList.get(userName) != null) {
             List<Reminder> l = reminderList.get(userName);
-            for (Reminder rem:l) {
-                if(rem.getReminderName().equals(reminder.getReminderName())){
+            for (Reminder rem : l) {
+                if (rem.getReminderName().equals(reminder.getReminderName())) {
                     rem.setScheduler(scheduledDate);
                 }
             }
@@ -63,31 +63,54 @@ public class ReminderDaoImpl {
 //        mongoTemplate.updateFirst(query, update, Reminder.class);
     }
 
-    public boolean addReminder(Reminder reminder){
+    public boolean addReminder(Reminder reminder) {
         boolean response = false;
         try {
-           // mongoTemplate.save(reminder,"Reminder");
-            if(reminderList.get(reminder.getUserName())==null) {
-                List l= new ArrayList();
+            // mongoTemplate.save(reminder,"Reminder");
+            if (reminderList.get(reminder.getUserName()) == null) {
+                List l = new ArrayList();
                 l.add(reminder);
                 reminderList.put(reminder.getUserName(), l);
-            }else{
+            } else {
                 List l1 = reminderList.get(reminder.getUserName());
                 l1.add(reminder);
-                reminderList.put(reminder.getUserName(),l1);
+                reminderList.put(reminder.getUserName(), l1);
             }
             response = true;
-        }catch (Exception e){
+        } catch (Exception e) {
             logger.error(e.getStackTrace());
         }
         return response;
     }
 
-    public void addUser(User user){
-        userList.put(user.getUserName(),user.getPassword());
+    public void addUser(User user) {
+        userList.put(user.getUserName(), user.getPassword());
     }
 
-    public List<Reminder> fetchReminder(String userName){
+    public List<Reminder> fetchReminder(String userName) {
         return reminderList.get(userName);
+    }
+
+    public Reminder updateReminder(Reminder reminder) {
+        List<Reminder> reminderCollection = reminderList.get(reminder.getUserName());
+        for (Reminder rem : reminderCollection) {
+            if (rem.getReminderName().equals(reminder.getReminderName())) {
+                if (reminder.getScheduler() != null) {
+                    rem.setScheduler(reminder.getScheduler());
+                }
+                if (reminder.getInterval() != 0) {
+                    rem.setInterval(reminder.getInterval());
+                }
+                if (reminder.getDescription() != null) {
+                    rem.setDescription(reminder.getDescription());
+                }
+                if(reminder.isEnableNotificaton() || !reminder.isEnableNotificaton()){
+                    rem.setEnableNotificaton(reminder.isEnableNotificaton());
+                }
+                return rem;
+            }
+
+        }
+        return null;
     }
 }

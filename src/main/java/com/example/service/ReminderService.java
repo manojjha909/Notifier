@@ -55,7 +55,7 @@ public class ReminderService {
             }
             for (Reminder reminder:list) {
 
-                if(reminder != null && reminderUtils.isNotificationTiming(reminder)){
+                if(reminder != null && reminderUtils.isNotificationTiming(reminder) && reminder.isEnableNotificaton()){
                     reminderDao.updateReminderScheduler(reminder,reminderUtils.addScheduleToInterval(reminder));
                     reminderList.add(reminder);
                 }
@@ -83,5 +83,10 @@ public class ReminderService {
         }
         return false;
     }
+
+    public Reminder updateReminder(Reminder reminder){
+       return reminderDao.updateReminder(reminder);
+    }
+
 
 }
