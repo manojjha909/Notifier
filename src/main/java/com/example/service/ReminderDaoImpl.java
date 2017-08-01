@@ -35,7 +35,7 @@ public class ReminderDaoImpl {
         List list= new ArrayList();
         list.add(new Reminder(1, "Manoj","ESA","ESA Description",true,new Date(),10));
         list.add(new Reminder(2, "Manoj","Water","Water Intake",true,new Date(),5));
-        list.add(new Reminder(3, "Manoj","Medicine","Medicine Time",true,new Date(),20));
+        list.add(new Reminder(3, "Manoj","Medicine","Medicine Time",false,new Date(),20));
         reminderList.put("Manoj",list);
 
         List list1= new ArrayList();

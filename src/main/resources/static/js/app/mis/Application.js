@@ -45,7 +45,11 @@ $(document).ready(function () {
                     "</div>";
 
                 $('#reminderId').append(elem);
-                $('#toggle_' +data[i].id).bootstrapToggle();
+                if (data[i].enableNotificaton) {
+                    $('#toggle_' + data[i].id).bootstrapToggle('on');
+                } else {
+                    $('#toggle_' + data[i].id).bootstrapToggle('off');
+                }
 
             }
         }
@@ -77,4 +81,44 @@ $(document).ready(function () {
         Cookies.remove("user");
         window.location.href = 'login.html';
     })
+
+    $('#fromDateId').datepicker({
+        format:'yyyy-mm-dd'
+    });
+    
+    
+    $('#registerB').click(function () {
+        var title = $('#title').val();
+        var description = $('#description').val();
+        var enabled = $('#enabled').prop('checked');
+        var date = $('#fromDateId').val();
+        var interval = $('#interval').val();
+        console.log(title);
+        console.log(description);
+        console.log(enabled);
+        console.log(date);
+        console.log(interval);
+
+        $.ajax({
+            type: "POST",
+            url: "/reminder/addreminder",
+            data: JSON.stringify({userName:user.userName, reminderName:title, description:description,
+                                enableNotificaton:enabled, scheduler:date, interval:interval}),
+            contentType: 'application/json',
+            dataType: 'json',
+            success: function(data) {
+                $('#resetB').click();
+                var stack_topleft = {"dir1": "down", "dir2": "right"};
+                new PNotify({
+                    title: 'Alert',
+                    text: 'Reminder Added Successfully.',
+                    icon: 'glyphicon glyphicon-envelope',
+                    addclass: "stack-topleft",
+                    stack: stack_topleft
+                });
+            }
+        });
+
+    });
+    
 });
